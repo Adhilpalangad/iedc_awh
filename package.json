@@ -1,0 +1,15 @@
+{
+  "name": "iedc-awh-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Root orchestrator for IEDC AWH Full-Stack Application",
+  "scripts": {
+    "install:all": "npm install --prefix frontend && npm install --prefix backend",
+    "dev": "concurrently \"npm run dev --prefix frontend\" \"npm start --prefix backend\"",
+    "frontend": "npm run dev --prefix frontend",
+    "backend": "npm start --prefix backend"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
