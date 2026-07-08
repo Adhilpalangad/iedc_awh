@@ -5,7 +5,6 @@ import { database } from '../services/db';
 const About = () => {
   const navigate = useNavigate();
   const [alumni, setAlumni] = useState([]);
-  const [achievements, setAchievements] = useState([]);
   const [generalSettings, setGeneralSettings] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -13,13 +12,11 @@ const About = () => {
     const fetchAboutData = async () => {
       try {
         setLoading(true);
-        const [fetchedAlumni, fetchedAchs, fetchedSettings] = await Promise.all([
+        const [fetchedAlumni, fetchedSettings] = await Promise.all([
           database.getAlumni(),
-          database.getAchievements(),
           database.getGeneralSettings()
         ]);
         setAlumni(fetchedAlumni);
-        setAchievements(fetchedAchs);
         setGeneralSettings(fetchedSettings);
       } catch (err) {
         console.error('Error fetching about page data:', err);
@@ -58,7 +55,7 @@ const About = () => {
             <div className="abt-card">
               <div className="abt-icon">🚀</div>
               <h3>Who We Are</h3>
-              <p>IEDC AWH is a flagship initiative of Kerala Startup Mission (KSUM) — one of 550+ IEDCs across Kerala — providing students with access to cutting-edge technology, mentorship and early risk capital.</p>
+              <p>{loading ? 'Loading...' : (generalSettings?.aboutText || 'IEDC AWH is a flagship initiative of Kerala Startup Mission (KSUM) — one of 550+ IEDCs across Kerala — providing students with access to cutting-edge technology, mentorship and early risk capital.')}</p>
             </div>
           </div>
 
@@ -169,43 +166,6 @@ const About = () => {
                   <h4>{al.name}</h4>
                   <div className="al-startup">🚀 {al.startup}</div>
                   <p className="al-desc">{al.description}</p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ACHIEVEMENTS FULL */}
-      <section className="section" style={{ background: 'var(--bg2)', paddingTop: '4rem' }}>
-        <div className="container">
-          <div className="sh">
-            <h2 className="st">Our <span className="accent">Achievements</span></h2>
-            <p className="ss">Real wins from the IEDC AWH community</p>
-          </div>
-
-          {loading ? (
-            <div style={{ textAlign: 'center', color: 'var(--muted)' }}>Loading achievements...</div>
-          ) : achievements.length === 0 ? (
-            <div className="empty-state">
-              <div className="empty-icon">🏆</div>
-              <h4>No Achievements Recorded</h4>
-              <p>Our achievements log is currently empty. Stay tuned for new milestones!</p>
-            </div>
-          ) : (
-            <div className="ach-grid" style={{ maxWidth: '100%' }}>
-              {achievements.map((ach) => (
-                <div className="ach-card" key={ach.id}>
-                  <div className="ach-img">
-                    <img src={ach.image} alt={ach.title}/>
-                    <div className="ach-badge">🏆 {ach.category}</div>
-                  </div>
-                  <div className="ach-body">
-                    <h3>{ach.title}</h3>
-                    <p className="ach-meta">{ach.organizer} · {ach.date}</p>
-                    <p className="ach-team">{ach.team}</p>
-                    <p className="ach-desc">{ach.description}</p>
-                  </div>
                 </div>
               ))}
             </div>

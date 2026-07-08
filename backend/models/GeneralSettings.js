@@ -19,8 +19,12 @@ const generalSettingsSchema = new mongoose.Schema({
   vision: {
     type: String,
     default: ""
+  },
+  aboutText: {
+    type: String,
+    default: "IEDC AWH is a flagship initiative of Kerala Startup Mission (KSUM) — one of 550+ IEDCs across Kerala — providing students with access to cutting-edge technology, mentorship and early risk capital."
   }
-}, { timestamps: true });
+} , { timestamps: true });
 
 const GeneralSettings = mongoose.model('GeneralSettings', generalSettingsSchema);
 export default GeneralSettings;

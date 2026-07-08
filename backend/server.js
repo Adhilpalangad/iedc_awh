@@ -31,7 +31,8 @@ const initialGeneralSettings = {
   nextEventTitle: "",
   nextEventDate: "",
   mission: "",
-  vision: ""
+  vision: "",
+  aboutText: "IEDC AWH is a flagship initiative of Kerala Startup Mission (KSUM) — one of 550+ IEDCs across Kerala — providing students with access to cutting-edge technology, mentorship and early risk capital."
 };
 
 // Auth Middleware

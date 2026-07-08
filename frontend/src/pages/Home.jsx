@@ -154,7 +154,7 @@ const Home = () => {
             </div>
           )}
           <div className="vmc">
-            <span className="vml" onClick={() => navigate('/about')}>
+            <span className="vml" onClick={() => navigate('/achievements')}>
               View All Achievements →
             </span>
           </div>

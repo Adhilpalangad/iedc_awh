@@ -59,6 +59,9 @@ const Navbar = () => {
           <NavLink to="/events" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
             Events
           </NavLink>
+          <NavLink to="/achievements" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+            Achievements
+          </NavLink>
           <NavLink to="/team" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
             Team
           </NavLink>

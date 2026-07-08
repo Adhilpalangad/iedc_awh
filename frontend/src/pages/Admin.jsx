@@ -16,7 +16,7 @@ const Admin = () => {
   const [gallery, setGallery] = useState([]);
   const [alumni, setAlumni] = useState([]);
   const [stats, setStats] = useState({ totalMembers: '', eventsConducted: '', yearsOfInnovation: '' });
-  const [generalSettings, setGeneralSettings] = useState({ nextEventTitle: '', nextEventDate: '', mission: '', vision: '' });
+  const [generalSettings, setGeneralSettings] = useState({ nextEventTitle: '', nextEventDate: '', mission: '', vision: '', aboutText: '' });
   const [loading, setLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -1239,8 +1239,18 @@ const Admin = () => {
                   ></textarea>
                 </div>
 
+                <div className="fg">
+                  <label>About Page - Who We Are Description</label>
+                  <textarea 
+                    value={generalSettings.aboutText} 
+                    onChange={(e) => setGeneralSettings({ ...generalSettings, aboutText: e.target.value })}
+                    required
+                    style={{ minHeight: '100px' }}
+                  ></textarea>
+                </div>
+
                 <button type="submit" className="btn btn-blue" style={{ marginTop: '1rem' }}>
-                  Update Vision, Mission & Banner
+                  Update Settings & About Page
                 </button>
               </form>
             </div>
