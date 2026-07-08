@@ -50,8 +50,8 @@ const Footer = () => {
           <div className="fc">
             <h4>Contact Us</h4>
             <p>AWH Engineering College<br/>Kuttikkattoor, Kozhikode<br/>Kerala — 673008</p>
-            <a href="mailto:iedc@awhengg.org">iedc@awhengg.org</a>
-            <a href="tel:+914952220000">+91 495 222 0000</a>
+            <a href="mailto:iedcawh@gmail.com">iedcawh@gmail.com</a>
+            <a href="tel:+919947713739">+91 99477 13739</a>
           </div>
         </div>
         

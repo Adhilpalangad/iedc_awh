@@ -99,15 +99,16 @@ const Contact = () => {
                 <div className="con-icon">✉️</div>
                 <div className="con-it">
                   <strong>Email</strong>
-                  <a href="mailto:iedc@awhengg.org">iedc@awhengg.org</a>
+                  <a href="mailto:iedcawh@gmail.com">iedcawh@gmail.com</a>
                 </div>
               </div>
               
               <div className="con-item">
                 <div className="con-icon">📞</div>
-                <div className="con-it">
+                <div className="con-it" style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
                   <strong>Phone</strong>
-                  <a href="tel:+914952220000">+91 495 222 0000</a>
+                  <a href="tel:+919947713739">+91 99477 13739</a>
+                  <a href="tel:+918606540566">+91 86065 40566</a>
                 </div>
               </div>
               
