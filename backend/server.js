@@ -8,6 +8,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import heicConvert from 'heic-convert';
 
 // Models
 import User from './models/User.js';
@@ -141,24 +142,42 @@ const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
   fileFilter: (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|webp|gif/;
-    const mimetype = filetypes.test(file.mimetype);
+    const filetypes = /jpeg|jpg|png|webp|gif|heic|heif/;
+    const mimetype = filetypes.test(file.mimetype) || /image\/heic|image\/heif/.test(file.mimetype);
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     
-    if (mimetype && extname) {
+    if (mimetype || extname) {
       return cb(null, true);
     }
     cb(new Error('Only image files are allowed.'));
   }
 });
 
-app.post('/api/upload', upload.single('image'), (req, res) => {
+app.post('/api/upload', upload.single('image'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded.' });
     }
-    const base64Data = req.file.buffer.toString('base64');
-    const fileUrl = `data:${req.file.mimetype};base64,${base64Data}`;
+    
+    let buffer = req.file.buffer;
+    let mimetype = req.file.mimetype;
+    
+    const isHeic = req.file.originalname.toLowerCase().endsWith('.heic') || 
+                   req.file.originalname.toLowerCase().endsWith('.heif') || 
+                   mimetype === 'image/heic' || 
+                   mimetype === 'image/heif';
+                   
+    if (isHeic) {
+      buffer = await heicConvert({
+        buffer: req.file.buffer,
+        format: 'JPEG',
+        quality: 1
+      });
+      mimetype = 'image/jpeg';
+    }
+    
+    const base64Data = buffer.toString('base64');
+    const fileUrl = `data:${mimetype};base64,${base64Data}`;
     res.json({ url: fileUrl });
   } catch (error) {
     res.status(500).json({ message: 'File upload failed.', error: error.message });

@@ -95,44 +95,26 @@ const Admin = () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    let imageFile = file;
-    const isHeic = file.name.toLowerCase().endsWith('.heic') || file.name.toLowerCase().endsWith('.heif') || file.type === 'image/heic' || file.type === 'image/heif';
-
-    if (isHeic) {
-      try {
-        setUploadingState(prev => ({ ...prev, [formType]: true }));
-        const heic2any = (await import('heic2any')).default;
-        const blob = await heic2any({
-          blob: file,
-          toType: 'image/jpeg',
-          quality: 0.8
-        });
-        const convertedBlob = Array.isArray(blob) ? blob[0] : blob;
-        const newFileName = file.name.replace(/\.(heic|heif)$/i, '.jpg');
-        imageFile = new File([convertedBlob], newFileName, { type: 'image/jpeg' });
-      } catch (err) {
-        console.error('HEIC conversion failed:', err);
-        alert('Failed to process HEIC image: ' + err.message);
-        e.target.value = '';
-        return;
-      } finally {
-        setUploadingState(prev => ({ ...prev, [formType]: false }));
-      }
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
+    try {
+      setUploadingState(prev => ({ ...prev, [formType]: true }));
+      // Upload raw file to backend (which handles conversion to JPEG for HEIC/HEIF)
+      const url = await database.uploadImage(file);
+      
       setCropModal({
         isOpen: true,
-        imgSrc: reader.result,
+        imgSrc: url,
         formType: formType,
-        fileName: imageFile.name
+        fileName: file.name.replace(/\.(heic|heif)$/i, '.jpg')
       });
       setCropBox({ x: 10, y: 10, w: 80, h: 80 });
       // Reset input
       e.target.value = '';
-    };
-    reader.readAsDataURL(imageFile);
+    } catch (err) {
+      console.error('Upload/Process error:', err);
+      alert('Failed to process image: ' + err.message);
+    } finally {
+      setUploadingState(prev => ({ ...prev, [formType]: false }));
+    }
   };
 
   const handleRecropImage = (imageUrl, formType) => {
