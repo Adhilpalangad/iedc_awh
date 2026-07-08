@@ -1415,110 +1415,115 @@ const Admin = () => {
               Drag the box to position, or drag the corners to resize the crop area (free dimensions).
             </p>
 
-            {/* Crop Container */}
-            <div 
-              ref={containerRef}
-              style={{
-                position: 'relative',
-                width: '100%',
-                maxHeight: '50vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: '#000',
-                borderRadius: '8px',
-                overflow: 'hidden',
-                userSelect: 'none'
-              }}
-            >
-              <img 
-                ref={imgRef}
-                src={cropModal.imgSrc} 
-                alt="Source" 
-                style={{
-                  maxWidth: '100%',
-                  maxHeight: '50vh',
-                  display: 'block',
-                  pointerEvents: 'none'
-                }}
-              />
-              
-              {/* Crop Box Overlay */}
+            {/* Crop Container Wrapper */}
+            <div style={{
+              width: '100%',
+              maxHeight: '50vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#000',
+              borderRadius: '8px',
+              overflow: 'hidden'
+            }}>
+              {/* Inner Wrapper that wraps the image exactly */}
               <div 
+                ref={containerRef}
                 style={{
-                  position: 'absolute',
-                  left: `${cropBox.x}%`,
-                  top: `${cropBox.y}%`,
-                  width: `${cropBox.w}%`,
-                  height: `${cropBox.h}%`,
-                  border: '2px dashed #3b82f6',
-                  cursor: 'move',
-                  boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.65)'
+                  position: 'relative',
+                  display: 'inline-block',
+                  userSelect: 'none'
                 }}
-                onMouseDown={(e) => handleCropDragStart(e, 'move')}
-                onTouchStart={(e) => handleCropDragStart(e, 'move')}
               >
-                {/* Corner Handles */}
-                {/* Top-Left */}
+                <img 
+                  ref={imgRef}
+                  src={cropModal.imgSrc} 
+                  alt="Source" 
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '50vh',
+                    display: 'block',
+                    pointerEvents: 'none'
+                  }}
+                />
+                
+                {/* Crop Box Overlay */}
                 <div 
                   style={{
                     position: 'absolute',
-                    left: '-6px',
-                    top: '-6px',
-                    width: '12px',
-                    height: '12px',
-                    backgroundColor: '#3b82f6',
-                    border: '1px solid #fff',
-                    cursor: 'nwse-resize'
+                    left: `${cropBox.x}%`,
+                    top: `${cropBox.y}%`,
+                    width: `${cropBox.w}%`,
+                    height: `${cropBox.h}%`,
+                    border: '2px dashed #3b82f6',
+                    cursor: 'move',
+                    boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.65)'
                   }}
-                  onMouseDown={(e) => { e.stopPropagation(); handleCropDragStart(e, 'tl'); }}
-                  onTouchStart={(e) => { e.stopPropagation(); handleCropDragStart(e, 'tl'); }}
-                />
-                {/* Top-Right */}
-                <div 
-                  style={{
-                    position: 'absolute',
-                    right: '-6px',
-                    top: '-6px',
-                    width: '12px',
-                    height: '12px',
-                    backgroundColor: '#3b82f6',
-                    border: '1px solid #fff',
-                    cursor: 'nesw-resize'
-                  }}
-                  onMouseDown={(e) => { e.stopPropagation(); handleCropDragStart(e, 'tr'); }}
-                  onTouchStart={(e) => { e.stopPropagation(); handleCropDragStart(e, 'tr'); }}
-                />
-                {/* Bottom-Left */}
-                <div 
-                  style={{
-                    position: 'absolute',
-                    left: '-6px',
-                    bottom: '-6px',
-                    width: '12px',
-                    height: '12px',
-                    backgroundColor: '#3b82f6',
-                    border: '1px solid #fff',
-                    cursor: 'nesw-resize'
-                  }}
-                  onMouseDown={(e) => { e.stopPropagation(); handleCropDragStart(e, 'bl'); }}
-                  onTouchStart={(e) => { e.stopPropagation(); handleCropDragStart(e, 'bl'); }}
-                />
-                {/* Bottom-Right */}
-                <div 
-                  style={{
-                    position: 'absolute',
-                    right: '-6px',
-                    bottom: '-6px',
-                    width: '12px',
-                    height: '12px',
-                    backgroundColor: '#3b82f6',
-                    border: '1px solid #fff',
-                    cursor: 'nwse-resize'
-                  }}
-                  onMouseDown={(e) => { e.stopPropagation(); handleCropDragStart(e, 'br'); }}
-                  onTouchStart={(e) => { e.stopPropagation(); handleCropDragStart(e, 'br'); }}
-                />
+                  onMouseDown={(e) => handleCropDragStart(e, 'move')}
+                  onTouchStart={(e) => handleCropDragStart(e, 'move')}
+                >
+                  {/* Corner Handles */}
+                  {/* Top-Left */}
+                  <div 
+                    style={{
+                      position: 'absolute',
+                      left: '-6px',
+                      top: '-6px',
+                      width: '12px',
+                      height: '12px',
+                      backgroundColor: '#3b82f6',
+                      border: '1px solid #fff',
+                      cursor: 'nwse-resize'
+                    }}
+                    onMouseDown={(e) => { e.stopPropagation(); handleCropDragStart(e, 'tl'); }}
+                    onTouchStart={(e) => { e.stopPropagation(); handleCropDragStart(e, 'tl'); }}
+                  />
+                  {/* Top-Right */}
+                  <div 
+                    style={{
+                      position: 'absolute',
+                      right: '-6px',
+                      top: '-6px',
+                      width: '12px',
+                      height: '12px',
+                      backgroundColor: '#3b82f6',
+                      border: '1px solid #fff',
+                      cursor: 'nesw-resize'
+                    }}
+                    onMouseDown={(e) => { e.stopPropagation(); handleCropDragStart(e, 'tr'); }}
+                    onTouchStart={(e) => { e.stopPropagation(); handleCropDragStart(e, 'tr'); }}
+                  />
+                  {/* Bottom-Left */}
+                  <div 
+                    style={{
+                      position: 'absolute',
+                      left: '-6px',
+                      bottom: '-6px',
+                      width: '12px',
+                      height: '12px',
+                      backgroundColor: '#3b82f6',
+                      border: '1px solid #fff',
+                      cursor: 'nesw-resize'
+                    }}
+                    onMouseDown={(e) => { e.stopPropagation(); handleCropDragStart(e, 'bl'); }}
+                    onTouchStart={(e) => { e.stopPropagation(); handleCropDragStart(e, 'bl'); }}
+                  />
+                  {/* Bottom-Right */}
+                  <div 
+                    style={{
+                      position: 'absolute',
+                      right: '-6px',
+                      bottom: '-6px',
+                      width: '12px',
+                      height: '12px',
+                      backgroundColor: '#3b82f6',
+                      border: '1px solid #fff',
+                      cursor: 'nwse-resize'
+                    }}
+                    onMouseDown={(e) => { e.stopPropagation(); handleCropDragStart(e, 'br'); }}
+                    onTouchStart={(e) => { e.stopPropagation(); handleCropDragStart(e, 'br'); }}
+                  />
+                </div>
               </div>
             </div>
 
