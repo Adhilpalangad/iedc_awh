@@ -110,6 +110,17 @@ const Admin = () => {
     reader.readAsDataURL(file);
   };
 
+  const handleRecropImage = (imageUrl, formType) => {
+    if (!imageUrl) return;
+    setCropModal({
+      isOpen: true,
+      imgSrc: imageUrl,
+      formType: formType,
+      fileName: 'recropped.jpg'
+    });
+    setCropBox({ x: 10, y: 10, w: 80, h: 80 });
+  };
+
   const handleCropDragStart = (e, action) => {
     e.preventDefault();
     const startX = e.clientX || (e.touches && e.touches[0].clientX);
@@ -679,6 +690,16 @@ const Admin = () => {
                           onChange={(e) => handleImageFileChange(e, 'event')}
                           style={{ fontSize: '0.8rem' }}
                         />
+                        {eventForm.image && (
+                          <button
+                            type="button"
+                            className="btn btn-ghost"
+                            style={{ fontSize: '0.72rem', padding: '0.2rem 0.6rem' }}
+                            onClick={() => handleRecropImage(eventForm.image, 'event')}
+                          >
+                            ✂️ Crop Image
+                          </button>
+                        )}
                         {uploadingState.event && <span style={{ fontSize: '0.78rem', color: 'var(--blue)', fontWeight: 'bold' }}>Uploading...</span>}
                       </div>
                       <input 
@@ -843,6 +864,16 @@ const Admin = () => {
                           onChange={(e) => handleImageFileChange(e, 'ach')}
                           style={{ fontSize: '0.8rem' }}
                         />
+                        {achForm.image && (
+                          <button
+                            type="button"
+                            className="btn btn-ghost"
+                            style={{ fontSize: '0.72rem', padding: '0.2rem 0.6rem' }}
+                            onClick={() => handleRecropImage(achForm.image, 'ach')}
+                          >
+                            ✂️ Crop Image
+                          </button>
+                        )}
                         {uploadingState.ach && <span style={{ fontSize: '0.78rem', color: 'var(--blue)', fontWeight: 'bold' }}>Uploading...</span>}
                       </div>
                       <input 
@@ -985,6 +1016,16 @@ const Admin = () => {
                           onChange={(e) => handleImageFileChange(e, 'team')}
                           style={{ fontSize: '0.8rem' }}
                         />
+                        {teamForm.image && (
+                          <button
+                            type="button"
+                            className="btn btn-ghost"
+                            style={{ fontSize: '0.72rem', padding: '0.2rem 0.6rem' }}
+                            onClick={() => handleRecropImage(teamForm.image, 'team')}
+                          >
+                            ✂️ Crop Image
+                          </button>
+                        )}
                         {uploadingState.team && <span style={{ fontSize: '0.78rem', color: 'var(--blue)', fontWeight: 'bold' }}>Uploading...</span>}
                       </div>
                       <input 
@@ -1103,6 +1144,16 @@ const Admin = () => {
                           onChange={(e) => handleImageFileChange(e, 'gallery')}
                           style={{ fontSize: '0.8rem' }}
                         />
+                        {galleryForm.image && (
+                          <button
+                            type="button"
+                            className="btn btn-ghost"
+                            style={{ fontSize: '0.72rem', padding: '0.2rem 0.6rem' }}
+                            onClick={() => handleRecropImage(galleryForm.image, 'gallery')}
+                          >
+                            ✂️ Crop Image
+                          </button>
+                        )}
                         {uploadingState.gallery && <span style={{ fontSize: '0.78rem', color: 'var(--blue)', fontWeight: 'bold' }}>Uploading...</span>}
                       </div>
                       <input 
@@ -1191,6 +1242,16 @@ const Admin = () => {
                           onChange={(e) => handleImageFileChange(e, 'alumni')}
                           style={{ fontSize: '0.8rem' }}
                         />
+                        {alumniForm.image && (
+                          <button
+                            type="button"
+                            className="btn btn-ghost"
+                            style={{ fontSize: '0.72rem', padding: '0.2rem 0.6rem' }}
+                            onClick={() => handleRecropImage(alumniForm.image, 'alumni')}
+                          >
+                            ✂️ Crop Image
+                          </button>
+                        )}
                         {uploadingState.alumni && <span style={{ fontSize: '0.78rem', color: 'var(--blue)', fontWeight: 'bold' }}>Uploading...</span>}
                       </div>
                       <input 
@@ -1439,6 +1500,7 @@ const Admin = () => {
                   ref={imgRef}
                   src={cropModal.imgSrc} 
                   alt="Source" 
+                  crossOrigin="anonymous"
                   style={{
                     maxWidth: '100%',
                     maxHeight: '50vh',
