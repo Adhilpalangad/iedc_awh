@@ -68,7 +68,9 @@ const Gallery = () => {
             <div style={{ textAlign: 'center', color: 'var(--muted)', padding: '2rem' }}>Loading snapshots...</div>
           ) : filteredItems.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-icon">🖼️</div>
+              <div className="empty-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', color: 'var(--muted)' }}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+              </div>
               <h4>No Gallery Images Found</h4>
               <p>No snapshots match your category filter. Select another filter category to view photographs.</p>
             </div>

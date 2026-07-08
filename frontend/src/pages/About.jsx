@@ -43,17 +43,23 @@ const About = () => {
         <div className="container">
           <div className="abt-cards">
             <div className="abt-card">
-              <div className="abt-icon">🎯</div>
+              <div className="abt-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: 'rgba(59,130,246,0.1)', color: 'var(--blue)', marginBottom: '1.2rem' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+              </div>
               <h3>Our Mission</h3>
               <p>{loading ? 'Loading...' : (generalSettings?.mission || 'To cultivate an entrepreneurial mindset among students through innovation, mentorship, and resource ecosystems that transform ideas into real, scalable solutions for society.')}</p>
             </div>
             <div className="abt-card">
-              <div className="abt-icon">🔭</div>
+              <div className="abt-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: 'rgba(59,130,246,0.1)', color: 'var(--blue)', marginBottom: '1.2rem' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              </div>
               <h3>Our Vision</h3>
               <p>{loading ? 'Loading...' : (generalSettings?.vision || 'To pioneer AWH Engineering College as the finest hub of bold innovation and the birthplace of world-class technology startups emerging from Kerala\'s academic ecosystem.')}</p>
             </div>
             <div className="abt-card">
-              <div className="abt-icon">🚀</div>
+              <div className="abt-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: 'rgba(59,130,246,0.1)', color: 'var(--blue)', marginBottom: '1.2rem' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
               <h3>Who We Are</h3>
               <p>{loading ? 'Loading...' : (generalSettings?.aboutText || 'IEDC AWH is a flagship initiative of Kerala Startup Mission (KSUM) — one of 550+ IEDCs across Kerala — providing students with access to cutting-edge technology, mentorship and early risk capital.')}</p>
             </div>
@@ -152,9 +158,11 @@ const About = () => {
             <div style={{ textAlign: 'center', color: 'var(--muted)' }}>Loading alumni...</div>
           ) : alumni.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-icon">🎓</div>
+              <div className="empty-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', color: 'var(--muted)' }}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>
+              </div>
               <h4>No Alumni Ventures Yet</h4>
-              <p>Our alumni startup directory is currently under development. Check back soon for founders' profiles!</p>
+              <p>Our alumni startup directory is currently under development. Check back soon for founders\' profiles!</p>
             </div>
           ) : (
             <div className="alumni-grid">
@@ -164,7 +172,7 @@ const About = () => {
                     <img src={al.image} alt={al.name}/>
                   </div>
                   <h4>{al.name}</h4>
-                  <div className="al-startup">🚀 {al.startup}</div>
+                  <div className="al-startup" style={{ fontSize: '0.8rem', color: 'var(--blue)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Startup · {al.startup}</div>
                   <p className="al-desc">{al.description}</p>
                 </div>
               ))}

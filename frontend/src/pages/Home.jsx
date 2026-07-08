@@ -87,7 +87,9 @@ const Home = () => {
               <div className="hero-img-ov"></div>
             </div>
             <div className="hero-float">
-              <div className="float-icon">🚀</div>
+              <div className="float-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(59,130,246,0.15)', color: 'var(--blue)' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              </div>
               <div>
                 <div className="float-t">Next Event</div>
                 <div className="float-s">{loading ? 'Loading...' : `${generalSettings?.nextEventTitle || 'HackSurface 3.0'} — ${generalSettings?.nextEventDate || 'Jan 2026'}`}</div>
@@ -131,7 +133,9 @@ const Home = () => {
             <div style={{ textAlign: 'center', color: 'var(--muted)' }}>Loading achievements...</div>
           ) : achievements.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-icon">🏆</div>
+              <div className="empty-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', color: 'var(--muted)' }}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34"></path><path d="M12 2a5 5 0 0 0-5 5v3c0 2.76 2.24 5 5 5s5-2.24 5-5V7a5 5 0 0 0-5-5z"></path></svg>
+              </div>
               <h4>No Achievements Yet</h4>
               <p>Our students and teams are actively developing new projects. Check back soon for updates!</p>
             </div>
@@ -141,7 +145,10 @@ const Home = () => {
                 <div className="ach-card" key={ach.id}>
                   <div className="ach-img">
                     <img src={ach.image} alt={ach.title}/>
-                    <div className="ach-badge">🏆 {ach.category}</div>
+                    <div className="ach-badge" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                      {ach.category}
+                    </div>
                   </div>
                   <div className="ach-body">
                     <h3>{ach.title}</h3>
@@ -217,7 +224,9 @@ const Home = () => {
             <div style={{ textAlign: 'center', color: 'var(--muted)' }}>Loading events...</div>
           ) : upcomingEvents.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-icon">📅</div>
+              <div className="empty-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', color: 'var(--muted)' }}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              </div>
               <h4>No Upcoming Events</h4>
               <p>We are currently mapping out our next workshops, bootcamps, and hackathons. Check back soon!</p>
             </div>
@@ -231,7 +240,10 @@ const Home = () => {
                   </div>
                   <div className="ev-body">
                     <h3>{ev.title}</h3>
-                    <p className="ev-meta">📅 {ev.date} · {ev.location}</p>
+                    <p className="ev-meta" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--blue)' }}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                      {ev.date} · {ev.location}
+                    </p>
                     <p className="ev-desc">{ev.description}</p>
                     {ev.registrationUrl && (
                       <a href={ev.registrationUrl} target="_blank" rel="noopener noreferrer" className="ev-btn">
@@ -255,17 +267,23 @@ const Home = () => {
             <p>You don't need a finished product — just a spark. IEDC AWH will help you validate, build and launch it with mentorship, resources and KSUM support.</p>
             <div className="idea-feats">
               <div className="idea-feat">
-                <div className="idea-icon">💡</div>
+                <div className="idea-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'rgba(59,130,246,0.1)', color: 'var(--blue)', margin: '0 auto 1rem auto' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21h6"></path><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2v1"></path><path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"></path></svg>
+                </div>
                 <strong>Mentorship</strong>
                 <small>Get guided by industry experts</small>
               </div>
               <div className="idea-feat">
-                <div className="idea-icon">🛠️</div>
+                <div className="idea-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'rgba(59,130,246,0.1)', color: 'var(--blue)', margin: '0 auto 1rem auto' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 0-7.94-7.94L9.8 1.4a1 1 0 0 0 0 1.4L11.4 4.4a1 1 0 0 0 1.4 0l2-2"></path><path d="M21.2 15.2a6 6 0 1 1-8.48 8.48 1 1 0 0 1 0-1.4l1.6-1.6a1 1 0 0 1 1.4 0l2 2a1 1 0 0 0 1.4 0l3.77-3.77a1 1 0 0 0 0-1.4L21.2 15.2z"></path></svg>
+                </div>
                 <strong>Maker Space</strong>
                 <small>Access tools and lab equipment</small>
               </div>
               <div className="idea-feat">
-                <div className="idea-icon">💰</div>
+                <div className="idea-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'rgba(59,130,246,0.1)', color: 'var(--blue)', margin: '0 auto 1rem auto' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
                 <strong>Funding Support</strong>
                 <small>Connect to KSUM risk capital</small>
               </div>
@@ -292,7 +310,9 @@ const Home = () => {
             <div style={{ textAlign: 'center', color: 'var(--muted)' }}>Loading core team...</div>
           ) : coreTeam.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-icon">👥</div>
+              <div className="empty-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', color: 'var(--muted)' }}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
               <h4>Team Profiles Unavailable</h4>
               <p>Our student leaders list is currently being updated for the new academic year.</p>
             </div>
@@ -338,7 +358,9 @@ const Home = () => {
             <div style={{ textAlign: 'center', color: 'var(--muted)' }}>Loading gallery...</div>
           ) : galleryPreview.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-icon">🖼️</div>
+              <div className="empty-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', color: 'var(--muted)' }}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+              </div>
               <h4>No Gallery Items Found</h4>
               <p>Check back later to see snapshots of our latest events and activities.</p>
             </div>

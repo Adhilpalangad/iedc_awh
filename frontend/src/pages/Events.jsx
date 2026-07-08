@@ -97,7 +97,9 @@ const Events = () => {
             <div style={{ textAlign: 'center', color: 'var(--muted)', padding: '2rem' }}>Loading events data...</div>
           ) : filteredEvents.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-icon">📅</div>
+              <div className="empty-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', color: 'var(--muted)' }}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              </div>
               <h4>No Events Found</h4>
               <p>No events match your criteria or search query. Try typing another term or check the other tab!</p>
             </div>
@@ -119,7 +121,10 @@ const Events = () => {
                   
                   <div className="ev-body">
                     <h3>{ev.title}</h3>
-                    <p className="ev-meta">📅 {ev.date} · {ev.location}</p>
+                    <p className="ev-meta" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--blue)' }}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                      {ev.date} · {ev.location}
+                    </p>
                     <p className="ev-desc">{ev.description}</p>
                     
                     {ev.isUpcoming ? (

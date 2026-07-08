@@ -49,7 +49,9 @@ const Team = () => {
             <div style={{ textAlign: 'center', color: 'var(--muted)', marginBottom: '4rem' }}>Loading Faculty...</div>
           ) : facultyList.length === 0 ? (
             <div className="empty-state" style={{ marginBottom: '4rem' }}>
-              <div className="empty-icon">👥</div>
+              <div className="empty-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', color: 'var(--muted)' }}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
               <h4>No Faculty Advisory listed</h4>
               <p>We are currently updating our advisory board member profiles. Please check back later.</p>
             </div>
@@ -94,7 +96,9 @@ const Team = () => {
               <div style={{ textAlign: 'center', color: 'var(--muted)' }}>Loading Execom members...</div>
             ) : execomList.length === 0 ? (
               <div className="empty-state">
-                <div className="empty-icon">👥</div>
+                <div className="empty-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', color: 'var(--muted)' }}>
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </div>
                 <h4>No Records for {selectedYear}</h4>
                 <p>No execom members have been registered under academic year {selectedYear}.</p>
               </div>

@@ -469,14 +469,14 @@ const Admin = () => {
           {isSidebarOpen ? '✕' : '|||'}
         </button>
         <span className="admin-mobile-title">
-          {activeTab === 'inquiries' && '📬 Inbox Log'}
-          {activeTab === 'events' && '📅 Events Manager'}
-          {activeTab === 'achievements' && '🏆 Achievements Log'}
-          {activeTab === 'team' && '👥 Execom & Faculty'}
-          {activeTab === 'gallery' && '🖼️ Gallery Assets'}
-          {activeTab === 'alumni' && '🎓 Alumni Startups'}
-          {activeTab === 'stats' && '📊 Update Metrics'}
-          {activeTab === 'settings' && '⚙️ Page Settings'}
+          {activeTab === 'inquiries' && 'Inbox Log'}
+          {activeTab === 'events' && 'Events Manager'}
+          {activeTab === 'achievements' && 'Achievements Log'}
+          {activeTab === 'team' && 'Execom & Faculty'}
+          {activeTab === 'gallery' && 'Gallery Assets'}
+          {activeTab === 'alumni' && 'Alumni Startups'}
+          {activeTab === 'stats' && 'Update Metrics'}
+          {activeTab === 'settings' && 'Page Settings'}
         </span>
         <div style={{ width: '32px' }}></div> {/* spacer for centering title */}
       </div>
@@ -489,7 +489,7 @@ const Admin = () => {
             className={`admin-nav-item ${activeTab === 'inquiries' ? 'active' : ''}`}
             onClick={() => { setActiveTab('inquiries'); setIsSidebarOpen(false); }}
           >
-            📬 Inbox 
+            Inbox 
             {inquiries.filter(x => !x.isRead).length > 0 && (
               <span className="badge-unread">{inquiries.filter(x => !x.isRead).length}</span>
             )}
@@ -499,49 +499,49 @@ const Admin = () => {
             className={`admin-nav-item ${activeTab === 'events' ? 'active' : ''}`}
             onClick={() => { setActiveTab('events'); setIsSidebarOpen(false); }}
           >
-            📅 Events
+            Events
           </div>
 
           <div 
             className={`admin-nav-item ${activeTab === 'achievements' ? 'active' : ''}`}
             onClick={() => { setActiveTab('achievements'); setIsSidebarOpen(false); }}
           >
-            🏆 Achievements
+            Achievements
           </div>
           
           <div 
             className={`admin-nav-item ${activeTab === 'team' ? 'active' : ''}`}
             onClick={() => { setActiveTab('team'); setIsSidebarOpen(false); }}
           >
-            👥 Execom List
+            Execom List
           </div>
           
           <div 
             className={`admin-nav-item ${activeTab === 'gallery' ? 'active' : ''}`}
             onClick={() => { setActiveTab('gallery'); setIsSidebarOpen(false); }}
           >
-            🖼️ Gallery Assets
+            Gallery Assets
           </div>
 
           <div 
             className={`admin-nav-item ${activeTab === 'alumni' ? 'active' : ''}`}
             onClick={() => { setActiveTab('alumni'); setIsSidebarOpen(false); }}
           >
-            🎓 Alumni Startups
+            Alumni Startups
           </div>
           
           <div 
             className={`admin-nav-item ${activeTab === 'stats' ? 'active' : ''}`}
             onClick={() => { setActiveTab('stats'); setIsSidebarOpen(false); }}
           >
-            📊 Metrics Count
+            Metrics Count
           </div>
 
           <div 
             className={`admin-nav-item ${activeTab === 'settings' ? 'active' : ''}`}
             onClick={() => { setActiveTab('settings'); setIsSidebarOpen(false); }}
           >
-            ⚙️ Page Settings
+            Page Settings
           </div>
 
           <button 
