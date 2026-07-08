@@ -8,14 +8,35 @@ const Gallery = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
-  // Available categories
-  const categories = [
-    { key: 'all', label: 'All' },
-    { key: 'hackathon', label: 'Hackathons' },
-    { key: 'bootcamp', label: 'Bootcamps' },
-    { key: 'talk', label: 'Talks' },
-    { key: 'workshop', label: 'Workshops' }
-  ];
+  // Available categories (predefined + dynamic custom categories)
+  const categories = React.useMemo(() => {
+    const base = [
+      { key: 'all', label: 'All' },
+      { key: 'hackathon', label: 'Hackathons' },
+      { key: 'bootcamp', label: 'Bootcamps' },
+      { key: 'talk', label: 'Talks' },
+      { key: 'workshop', label: 'Workshops' }
+    ];
+    
+    const predefinedKeys = new Set(base.map(c => c.key));
+    const customKeys = new Set();
+    
+    galleryItems.forEach(item => {
+      if (item.category) {
+        const normalized = item.category.trim().toLowerCase();
+        if (normalized && !predefinedKeys.has(normalized)) {
+          customKeys.add(item.category.trim());
+        }
+      }
+    });
+    
+    const customCategories = Array.from(customKeys).map(cat => ({
+      key: cat,
+      label: cat.charAt(0).toUpperCase() + cat.slice(1)
+    }));
+    
+    return [...base, ...customCategories];
+  }, [galleryItems]);
 
   useEffect(() => {
     const fetchGallery = async () => {
@@ -34,7 +55,8 @@ const Gallery = () => {
 
   // Filter gallery items
   const filteredItems = galleryItems.filter(item => 
-    activeFilter === 'all' || item.category === activeFilter
+    activeFilter === 'all' || 
+    (item.category && item.category.trim().toLowerCase() === activeFilter.trim().toLowerCase())
   );
 
   return (

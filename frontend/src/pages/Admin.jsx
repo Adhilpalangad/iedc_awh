@@ -654,15 +654,29 @@ const Admin = () => {
                   <div className="fg">
                     <label>Category</label>
                     <select 
-                      value={eventForm.category} 
-                      onChange={(e) => setEventForm({ ...eventForm, category: e.target.value })}
+                      value={['hackathon', 'bootcamp', 'talk', 'workshop', 'idea'].includes(eventForm.category) ? eventForm.category : 'other'} 
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setEventForm({ ...eventForm, category: val === 'other' ? '' : val });
+                      }}
                     >
                       <option value="hackathon">Hackathon</option>
                       <option value="bootcamp">Bootcamp</option>
                       <option value="talk">Talk (i-Talk)</option>
                       <option value="workshop">Workshop</option>
                       <option value="idea">Idea Fest</option>
+                      <option value="other">Other (Specify...)</option>
                     </select>
+                    {!['hackathon', 'bootcamp', 'talk', 'workshop', 'idea'].includes(eventForm.category) && (
+                      <input 
+                        type="text" 
+                        placeholder="Enter custom category..." 
+                        value={eventForm.category} 
+                        onChange={(e) => setEventForm({ ...eventForm, category: e.target.value })}
+                        style={{ marginTop: '0.5rem' }}
+                        required
+                      />
+                    )}
                   </div>
                 </div>
 
@@ -1121,14 +1135,28 @@ const Admin = () => {
                   <div className="fg">
                     <label>Category</label>
                     <select 
-                      value={galleryForm.category} 
-                      onChange={(e) => setGalleryForm({ ...galleryForm, category: e.target.value })}
+                      value={['hackathon', 'bootcamp', 'talk', 'workshop'].includes(galleryForm.category) ? galleryForm.category : 'other'} 
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setGalleryForm({ ...galleryForm, category: val === 'other' ? '' : val });
+                      }}
                     >
                       <option value="hackathon">Hackathon</option>
                       <option value="bootcamp">Bootcamp</option>
                       <option value="talk">Talk (i-Talk)</option>
                       <option value="workshop">Workshop</option>
+                      <option value="other">Other (Specify...)</option>
                     </select>
+                    {!['hackathon', 'bootcamp', 'talk', 'workshop'].includes(galleryForm.category) && (
+                      <input 
+                        type="text" 
+                        placeholder="Enter custom category..." 
+                        value={galleryForm.category} 
+                        onChange={(e) => setGalleryForm({ ...galleryForm, category: e.target.value })}
+                        style={{ marginTop: '0.5rem' }}
+                        required
+                      />
+                    )}
                   </div>
                 </div>
 
