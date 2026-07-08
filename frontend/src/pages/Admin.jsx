@@ -30,6 +30,12 @@ const Admin = () => {
   // Upload States
   const [uploadingState, setUploadingState] = useState({ event: false, team: false, gallery: false, ach: false, alumni: false });
 
+  // Crop States
+  const [cropModal, setCropModal] = useState({ isOpen: false, imgSrc: '', formType: '', fileName: '' });
+  const [cropBox, setCropBox] = useState({ x: 10, y: 10, w: 80, h: 80 });
+  const containerRef = React.useRef(null);
+  const imgRef = React.useRef(null);
+
   // Listen to Authentication State
   useEffect(() => {
     const unsubscribe = authService.onStateChanged((currentUser) => {
@@ -85,31 +91,146 @@ const Admin = () => {
   };
 
   // --- IMAGE UPLOAD HELPER ---
-  const handleImageFileChange = async (e, formType) => {
+  const handleImageFileChange = (e, formType) => {
     const file = e.target.files[0];
     if (!file) return;
 
+    const reader = new FileReader();
+    reader.onload = () => {
+      setCropModal({
+        isOpen: true,
+        imgSrc: reader.result,
+        formType: formType,
+        fileName: file.name
+      });
+      setCropBox({ x: 10, y: 10, w: 80, h: 80 });
+      // Reset input
+      e.target.value = '';
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleCropDragStart = (e, action) => {
+    e.preventDefault();
+    const startX = e.clientX || (e.touches && e.touches[0].clientX);
+    const startY = e.clientY || (e.touches && e.touches[0].clientY);
+    if (startX === undefined || startY === undefined) return;
+
+    const initialBox = { ...cropBox };
+    
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const containerW = rect.width;
+    const containerH = rect.height;
+
+    const handleDragMove = (moveEvent) => {
+      const currentX = moveEvent.clientX || (moveEvent.touches && moveEvent.touches[0].clientX);
+      const currentY = moveEvent.clientY || (moveEvent.touches && moveEvent.touches[0].clientY);
+      if (currentX === undefined || currentY === undefined) return;
+
+      const dx = ((currentX - startX) / containerW) * 100;
+      const dy = ((currentY - startY) / containerH) * 100;
+
+      setCropBox(prev => {
+        let next = { ...initialBox };
+        
+        if (action === 'move') {
+          next.x = Math.max(0, Math.min(100 - next.w, initialBox.x + dx));
+          next.y = Math.max(0, Math.min(100 - next.h, initialBox.y + dy));
+        } else if (action === 'br') {
+          next.w = Math.max(5, Math.min(100 - next.x, initialBox.w + dx));
+          next.h = Math.max(5, Math.min(100 - next.y, initialBox.h + dy));
+        } else if (action === 'tl') {
+          const newX = Math.max(0, Math.min(initialBox.x + initialBox.w - 5, initialBox.x + dx));
+          next.w = initialBox.w + (initialBox.x - newX);
+          next.x = newX;
+          const newY = Math.max(0, Math.min(initialBox.y + initialBox.h - 5, initialBox.y + dy));
+          next.h = initialBox.h + (initialBox.y - newY);
+          next.y = newY;
+        } else if (action === 'tr') {
+          next.w = Math.max(5, Math.min(100 - next.x, initialBox.w + dx));
+          const newY = Math.max(0, Math.min(initialBox.y + initialBox.h - 5, initialBox.y + dy));
+          next.h = initialBox.h + (initialBox.y - newY);
+          next.y = newY;
+        } else if (action === 'bl') {
+          const newX = Math.max(0, Math.min(initialBox.x + initialBox.w - 5, initialBox.x + dx));
+          next.w = initialBox.w + (initialBox.x - newX);
+          next.x = newX;
+          next.h = Math.max(5, Math.min(100 - next.y, initialBox.h + dy));
+        }
+        return next;
+      });
+    };
+
+    const handleDragEnd = () => {
+      document.removeEventListener('mousemove', handleDragMove);
+      document.removeEventListener('mouseup', handleDragEnd);
+      document.removeEventListener('touchmove', handleDragMove);
+      document.removeEventListener('touchend', handleDragEnd);
+    };
+
+    document.addEventListener('mousemove', handleDragMove);
+    document.addEventListener('mouseup', handleDragEnd);
+    document.addEventListener('touchmove', handleDragMove, { passive: false });
+    document.addEventListener('touchend', handleDragEnd);
+  };
+
+  const handleCropSave = async () => {
+    if (!imgRef.current) return;
+    const imgElement = imgRef.current;
+    
     try {
-      setUploadingState(prev => ({ ...prev, [formType]: true }));
-      const url = await database.uploadImage(file);
+      setUploadingState(prev => ({ ...prev, [cropModal.formType]: true }));
+      setCropModal(prev => ({ ...prev, isOpen: false }));
+
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
       
-      if (formType === 'event') {
-        setEventForm(prev => ({ ...prev, image: url }));
-      } else if (formType === 'team') {
-        setTeamForm(prev => ({ ...prev, image: url }));
-      } else if (formType === 'gallery') {
-        setGalleryForm(prev => ({ ...prev, image: url }));
-      } else if (formType === 'ach') {
-        setAchForm(prev => ({ ...prev, image: url }));
-      } else if (formType === 'alumni') {
-        setAlumniForm(prev => ({ ...prev, image: url }));
-      }
-      alert('Image file uploaded successfully!');
+      const naturalW = imgElement.naturalWidth;
+      const naturalH = imgElement.naturalHeight;
+      
+      const cropX = (cropBox.x / 100) * naturalW;
+      const cropY = (cropBox.y / 100) * naturalH;
+      const cropW = (cropBox.w / 100) * naturalW;
+      const cropH = (cropBox.h / 100) * naturalH;
+      
+      canvas.width = cropW;
+      canvas.height = cropH;
+      
+      ctx.drawImage(
+        imgElement,
+        cropX, cropY, cropW, cropH,
+        0, 0, cropW, cropH
+      );
+
+      canvas.toBlob(async (blob) => {
+        if (!blob) {
+          throw new Error('Canvas to blob conversion failed.');
+        }
+        
+        const croppedFile = new File([blob], cropModal.fileName || 'cropped.jpg', { type: 'image/jpeg' });
+        const url = await database.uploadImage(croppedFile);
+        const formType = cropModal.formType;
+
+        if (formType === 'event') {
+          setEventForm(prev => ({ ...prev, image: url }));
+        } else if (formType === 'team') {
+          setTeamForm(prev => ({ ...prev, image: url }));
+        } else if (formType === 'gallery') {
+          setGalleryForm(prev => ({ ...prev, image: url }));
+        } else if (formType === 'ach') {
+          setAchForm(prev => ({ ...prev, image: url }));
+        } else if (formType === 'alumni') {
+          setAlumniForm(prev => ({ ...prev, image: url }));
+        }
+        alert('Image cropped and uploaded successfully!');
+      }, 'image/jpeg', 0.9);
+      
     } catch (err) {
-      console.error('Upload error:', err);
-      alert('Upload failed: ' + err.message);
+      console.error('Crop/Upload error:', err);
+      alert('Crop/Upload failed: ' + err.message);
     } finally {
-      setUploadingState(prev => ({ ...prev, [formType]: false }));
+      setUploadingState(prev => ({ ...prev, [cropModal.formType]: false }));
     }
   };
 
@@ -1257,6 +1378,170 @@ const Admin = () => {
           </div>
         )}
       </main>
+
+      {/* DRAGGABLE CROP MODAL */}
+      {cropModal.isOpen && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: 'rgba(0,0,0,0.85)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 99999,
+          padding: '1rem',
+          boxSizing: 'border-box'
+        }}>
+          <div className="admin-card" style={{
+            width: '90%',
+            maxWidth: '600px',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            backgroundColor: 'var(--bg)',
+            border: '1px solid var(--border)',
+            borderRadius: '12px',
+            padding: '1.5rem',
+            boxSizing: 'border-box',
+            position: 'relative'
+          }}>
+            <h3 style={{ margin: 0, color: 'var(--white)' }}>Adjust & Crop Image</h3>
+            <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--muted)' }}>
+              Drag the box to position, or drag the corners to resize the crop area (free dimensions).
+            </p>
+
+            {/* Crop Container */}
+            <div 
+              ref={containerRef}
+              style={{
+                position: 'relative',
+                width: '100%',
+                maxHeight: '50vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#000',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                userSelect: 'none'
+              }}
+            >
+              <img 
+                ref={imgRef}
+                src={cropModal.imgSrc} 
+                alt="Source" 
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: '50vh',
+                  display: 'block',
+                  pointerEvents: 'none'
+                }}
+              />
+              
+              {/* Crop Box Overlay */}
+              <div 
+                style={{
+                  position: 'absolute',
+                  left: `${cropBox.x}%`,
+                  top: `${cropBox.y}%`,
+                  width: `${cropBox.w}%`,
+                  height: `${cropBox.h}%`,
+                  border: '2px dashed #3b82f6',
+                  cursor: 'move',
+                  boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.65)'
+                }}
+                onMouseDown={(e) => handleCropDragStart(e, 'move')}
+                onTouchStart={(e) => handleCropDragStart(e, 'move')}
+              >
+                {/* Corner Handles */}
+                {/* Top-Left */}
+                <div 
+                  style={{
+                    position: 'absolute',
+                    left: '-6px',
+                    top: '-6px',
+                    width: '12px',
+                    height: '12px',
+                    backgroundColor: '#3b82f6',
+                    border: '1px solid #fff',
+                    cursor: 'nwse-resize'
+                  }}
+                  onMouseDown={(e) => { e.stopPropagation(); handleCropDragStart(e, 'tl'); }}
+                  onTouchStart={(e) => { e.stopPropagation(); handleCropDragStart(e, 'tl'); }}
+                />
+                {/* Top-Right */}
+                <div 
+                  style={{
+                    position: 'absolute',
+                    right: '-6px',
+                    top: '-6px',
+                    width: '12px',
+                    height: '12px',
+                    backgroundColor: '#3b82f6',
+                    border: '1px solid #fff',
+                    cursor: 'nesw-resize'
+                  }}
+                  onMouseDown={(e) => { e.stopPropagation(); handleCropDragStart(e, 'tr'); }}
+                  onTouchStart={(e) => { e.stopPropagation(); handleCropDragStart(e, 'tr'); }}
+                />
+                {/* Bottom-Left */}
+                <div 
+                  style={{
+                    position: 'absolute',
+                    left: '-6px',
+                    bottom: '-6px',
+                    width: '12px',
+                    height: '12px',
+                    backgroundColor: '#3b82f6',
+                    border: '1px solid #fff',
+                    cursor: 'nesw-resize'
+                  }}
+                  onMouseDown={(e) => { e.stopPropagation(); handleCropDragStart(e, 'bl'); }}
+                  onTouchStart={(e) => { e.stopPropagation(); handleCropDragStart(e, 'bl'); }}
+                />
+                {/* Bottom-Right */}
+                <div 
+                  style={{
+                    position: 'absolute',
+                    right: '-6px',
+                    bottom: '-6px',
+                    width: '12px',
+                    height: '12px',
+                    backgroundColor: '#3b82f6',
+                    border: '1px solid #fff',
+                    cursor: 'nwse-resize'
+                  }}
+                  onMouseDown={(e) => { e.stopPropagation(); handleCropDragStart(e, 'br'); }}
+                  onTouchStart={(e) => { e.stopPropagation(); handleCropDragStart(e, 'br'); }}
+                />
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+              <button 
+                type="button" 
+                className="btn btn-ghost"
+                onClick={() => setCropModal({ isOpen: false, imgSrc: '', formType: '', fileName: '' })}
+              >
+                Cancel
+              </button>
+              <button 
+                type="button" 
+                className="btn btn-blue"
+                onClick={handleCropSave}
+              >
+                Crop & Save Image
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
