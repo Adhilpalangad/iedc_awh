@@ -25,6 +25,10 @@ const apiRequest = async (path, options = {}) => {
     headers
   });
   if (!response.ok) {
+    if (response.status === 401) {
+      // Clear token and logout
+      authService.logout();
+    }
     const errorData = await response.json().catch(() => ({}));
     throw new Error(errorData.message || 'Request failed');
   }
