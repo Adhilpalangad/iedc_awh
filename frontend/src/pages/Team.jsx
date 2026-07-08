@@ -63,7 +63,9 @@ const Team = () => {
                   <h4>{faculty.name}</h4>
                   <p className="tc-role">{faculty.role}</p>
                   <p className="tfc-dept">{faculty.department}</p>
-                  <a href={faculty.linkedin} className="tc-li" target="_blank" rel="noopener noreferrer">in</a>
+                  <a href={faculty.linkedin} className="tc-li" target="_blank" rel="noopener noreferrer" title="LinkedIn" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                  </a>
                 </div>
               ))}
             </div>
@@ -106,7 +108,9 @@ const Team = () => {
                     <h4>{member.name}</h4>
                     <p className="tc-role">{member.role}</p>
                     <p className="tfc-dept">{member.department}</p>
-                    <a href={member.linkedin} className="tc-li" target="_blank" rel="noopener noreferrer">in</a>
+                    <a href={member.linkedin} className="tc-li" target="_blank" rel="noopener noreferrer" title="LinkedIn" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    </a>
                   </div>
                 ))}
               </div>
