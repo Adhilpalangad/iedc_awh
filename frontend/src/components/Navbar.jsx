@@ -71,11 +71,6 @@ const Navbar = () => {
           <NavLink to="/contact" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
             Contact
           </NavLink>
-          
-          {/* Quick link to Admin Panel inside navbar for ease of demo (styled nicely) */}
-          <NavLink to="/admin" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} style={{ opacity: 0.65 }}>
-            Admin Panel
-          </NavLink>
         </div>
 
         <button 
