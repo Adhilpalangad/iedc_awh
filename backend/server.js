@@ -20,8 +20,19 @@ import GalleryItem from './models/GalleryItem.js';
 import Alumni from './models/Alumni.js';
 import Submission from './models/Submission.js';
 
-// Seed Data
-import * as seedData from './seedData.js';
+// Initial clean states
+const initialStats = {
+  totalMembers: "0+",
+  eventsConducted: "0+",
+  yearsOfInnovation: "0+"
+};
+
+const initialGeneralSettings = {
+  nextEventTitle: "",
+  nextEventDate: "",
+  mission: "",
+  vision: ""
+};
 
 // Auth Middleware
 import authMiddleware from './middleware/auth.js';
@@ -100,7 +111,7 @@ async function seedDatabase() {
     if (statsCount === 0) {
       await Stats.create({
         _id: 'stats',
-        ...seedData.initialStats
+        ...initialStats
       });
       console.log('Seeded initial statistics.');
     }
@@ -110,44 +121,9 @@ async function seedDatabase() {
     if (settingsCount === 0) {
       await GeneralSettings.create({
         _id: 'general',
-        ...seedData.initialGeneralSettings
+        ...initialGeneralSettings
       });
       console.log('Seeded initial general settings.');
-    }
-
-    // 4. Seed Achievements
-    const achCount = await Achievement.countDocuments();
-    if (achCount === 0) {
-      await Achievement.insertMany(seedData.initialAchievements);
-      console.log('Seeded initial achievements.');
-    }
-
-    // 5. Seed Events
-    const eventCount = await Event.countDocuments();
-    if (eventCount === 0) {
-      await Event.insertMany(seedData.initialEvents);
-      console.log('Seeded initial events.');
-    }
-
-    // 6. Seed Team Members
-    const teamCount = await TeamMember.countDocuments();
-    if (teamCount === 0) {
-      await TeamMember.insertMany(seedData.initialTeam);
-      console.log('Seeded initial team members.');
-    }
-
-    // 7. Seed Gallery
-    const galleryCount = await GalleryItem.countDocuments();
-    if (galleryCount === 0) {
-      await GalleryItem.insertMany(seedData.initialGallery);
-      console.log('Seeded initial gallery items.');
-    }
-
-    // 8. Seed Alumni Startups
-    const alumniCount = await Alumni.countDocuments();
-    if (alumniCount === 0) {
-      await Alumni.insertMany(seedData.initialAlumni);
-      console.log('Seeded initial alumni startups.');
     }
 
   } catch (error) {
@@ -158,15 +134,7 @@ async function seedDatabase() {
 // ============================================================================
 // IMAGE UPLOAD ROUTE (MULTER)
 // ============================================================================
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({ 
   storage,
@@ -188,9 +156,8 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded.' });
     }
-    const host = req.get('host');
-    const protocol = req.protocol;
-    const fileUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
+    const base64Data = req.file.buffer.toString('base64');
+    const fileUrl = `data:${req.file.mimetype};base64,${base64Data}`;
     res.json({ url: fileUrl });
   } catch (error) {
     res.status(500).json({ message: 'File upload failed.', error: error.message });
@@ -240,7 +207,7 @@ app.get('/api/stats', async (req, res) => {
   try {
     let stats = await Stats.findById('stats');
     if (!stats) {
-      stats = await Stats.create({ _id: 'stats', ...seedData.initialStats });
+      stats = await Stats.create({ _id: 'stats', ...initialStats });
     }
     res.json(mapDoc(stats));
   } catch (error) {
@@ -303,7 +270,7 @@ app.get('/api/settings', async (req, res) => {
   try {
     let settings = await GeneralSettings.findById('general');
     if (!settings) {
-      settings = await GeneralSettings.create({ _id: 'general', ...seedData.initialGeneralSettings });
+      settings = await GeneralSettings.create({ _id: 'general', ...initialGeneralSettings });
     }
     res.json(mapDoc(settings));
   } catch (error) {
